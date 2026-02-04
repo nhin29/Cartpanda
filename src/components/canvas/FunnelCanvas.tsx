@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import {
   ReactFlow,
   Background,
@@ -8,7 +8,9 @@ import {
   type OnConnect,
 } from 'reactflow';
 import type { FunnelNode, FunnelEdge } from '../../types';
+import type { NodeType } from '../../types';
 import { funnelNodeTypes } from '../nodes';
+import { CanvasDropHandler } from './CanvasDropHandler';
 
 export interface FunnelCanvasProps {
   nodes: FunnelNode[];
@@ -16,6 +18,7 @@ export interface FunnelCanvasProps {
   onNodesChange?: OnNodesChange;
   onEdgesChange?: OnEdgesChange;
   onConnect?: OnConnect;
+  onAddNode?: (type: NodeType, position: { x: number; y: number }) => void;
 }
 
 export function FunnelCanvas({
@@ -24,7 +27,10 @@ export function FunnelCanvas({
   onNodesChange,
   onEdgesChange,
   onConnect,
+  onAddNode,
 }: FunnelCanvasProps) {
+  const [isDragOver, setIsDragOver] = useState(false);
+
   const handleNodesChange = useCallback<OnNodesChange>(
     (changes) => onNodesChange?.(changes),
     [onNodesChange]
@@ -37,9 +43,17 @@ export function FunnelCanvas({
     (connection) => onConnect?.(connection),
     [onConnect]
   );
+  const handleDropEnd = useCallback(() => setIsDragOver(false), []);
 
   return (
-    <div className="h-full w-full">
+    <div
+      className="h-full w-full"
+      onDragEnter={() => setIsDragOver(true)}
+      onDragLeave={(e) => {
+        const related = e.relatedTarget as HTMLElement | null;
+        if (!related || !e.currentTarget.contains(related)) setIsDragOver(false);
+      }}
+    >
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -61,6 +75,9 @@ export function FunnelCanvas({
       >
         <Background gap={16} size={1} color="#e2e8f0" />
         <Controls showInteractive={false} />
+        {isDragOver && onAddNode && (
+          <CanvasDropHandler onAddNode={onAddNode} onDropEnd={handleDropEnd} />
+        )}
       </ReactFlow>
     </div>
   );
