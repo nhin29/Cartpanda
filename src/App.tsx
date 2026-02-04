@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { FunnelCanvas } from './components/canvas';
+import { Palette } from './components/palette';
 import type { FunnelNode, FunnelEdge } from './types';
 import { DEFAULT_FUNNEL_NODES, DEFAULT_FUNNEL_EDGES } from './constants';
 
@@ -14,15 +15,18 @@ function App() {
           Funnel Builder
         </h1>
       </header>
-      <main className="flex-1 min-h-0">
-        <FunnelCanvas
-          nodes={nodes}
-          edges={edges}
-          onNodesChange={() => {}}
-          onEdgesChange={() => {}}
-          onConnect={() => {}}
-        />
-      </main>
+      <div className="flex-1 min-h-0 flex">
+        <Palette />
+        <main className="flex-1 min-h-0">
+          <FunnelCanvas
+            nodes={nodes}
+            edges={edges}
+            onNodesChange={() => {}}
+            onEdgesChange={() => {}}
+            onConnect={() => {}}
+          />
+        </main>
+      </div>
     </div>
   );
 }
