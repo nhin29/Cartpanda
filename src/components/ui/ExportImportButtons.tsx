@@ -65,14 +65,14 @@ export function ExportImportButtons({
       <button
         type="button"
         onClick={handleExport}
-        className="rounded border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1.5 text-sm font-medium text-[var(--color-primary)] hover:bg-[var(--color-border)]"
+        className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1.5 text-sm font-medium text-[var(--color-primary)] transition-colors hover:border-[var(--color-border)] hover:bg-[var(--color-canvas)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-1"
       >
         Export JSON
       </button>
       <button
         type="button"
         onClick={handleImportClick}
-        className="rounded border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1.5 text-sm font-medium text-[var(--color-primary)] hover:bg-[var(--color-border)]"
+        className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1.5 text-sm font-medium text-[var(--color-primary)] transition-colors hover:border-[var(--color-border)] hover:bg-[var(--color-canvas)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] focus:ring-offset-1"
       >
         Import JSON
       </button>
