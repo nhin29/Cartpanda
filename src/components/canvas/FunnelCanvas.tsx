@@ -15,6 +15,7 @@ import type { FunnelNode, FunnelEdge } from '../../types';
 import type { NodeType } from '../../types';
 import { funnelNodeTypes } from '../nodes';
 import { CanvasDropHandler } from './CanvasDropHandler';
+import { EmptyState } from '../ui';
 
 export interface FunnelCanvasProps {
   nodes: FunnelNode[];
@@ -58,12 +59,14 @@ export function FunnelCanvas({
 
   return (
     <div
-      className="h-full w-full"
+      className="relative h-full w-full"
       onDragEnter={() => setIsDragOver(true)}
       onDragLeave={(e) => {
         const related = e.relatedTarget as HTMLElement | null;
         if (!related || !e.currentTarget.contains(related)) setIsDragOver(false);
       }}
+      role="application"
+      aria-label="Funnel canvas: drag nodes and connect with edges"
     >
       <ReactFlow
         nodes={nodes}
@@ -91,6 +94,7 @@ export function FunnelCanvas({
       >
         <Background gap={16} size={1} color="#e2e8f0" />
         <Controls showInteractive={false} />
+        {nodes.length === 0 && <EmptyState />}
         {isDragOver && onAddNode && (
           <CanvasDropHandler onAddNode={onAddNode} onDropEnd={handleDropEnd} />
         )}

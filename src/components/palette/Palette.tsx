@@ -12,7 +12,7 @@ const NODE_ICONS: Record<NodeType, string> = {
 export function Palette() {
   return (
     <aside
-      className="shrink-0 w-52 border-r border-[var(--color-border)] bg-[var(--color-surface)] p-3"
+      className="w-52 shrink-0 border-r border-[var(--color-border)] bg-[var(--color-surface)] p-3"
       aria-label="Node palette"
     >
       <h2 className="mb-3 text-sm font-semibold text-[var(--color-primary)]">
@@ -35,13 +35,10 @@ export function Palette() {
                 tabIndex={0}
                 aria-label={`Add ${label} to canvas`}
                 onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    (e.currentTarget as HTMLDivElement).click();
-                  }
+                  if (e.key === 'Enter' || e.key === ' ') e.preventDefault();
                 }}
               >
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded bg-[var(--color-border)] text-base">
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded bg-[var(--color-border)] text-base" aria-hidden>
                   {icon}
                 </span>
                 <span className="truncate font-medium">{label}</span>

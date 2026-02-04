@@ -16,6 +16,7 @@ import { getDefaultTitleForNewNode } from './utils';
 
 function App() {
   const [funnelState, setFunnelState] = useState(getInitialFunnel);
+  const [paletteOpen, setPaletteOpen] = useState(true);
   const { nodes, edges } = funnelState;
 
   const setNodes = useCallback(
@@ -105,9 +106,20 @@ function App() {
   return (
     <div className="h-screen w-screen flex flex-col bg-[var(--color-canvas)]">
       <header className="shrink-0 flex items-center justify-between gap-4 border-b border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2">
-        <h1 className="text-lg font-semibold text-[var(--color-primary)]">
-          Funnel Builder
-        </h1>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setPaletteOpen((o) => !o)}
+            className="rounded border border-[var(--color-border)] p-1.5 text-[var(--color-primary)] hover:bg-[var(--color-border)]"
+            aria-expanded={paletteOpen}
+            aria-label={paletteOpen ? 'Close palette' : 'Open palette'}
+          >
+            <span aria-hidden>{paletteOpen ? '◀' : '▶'}</span>
+          </button>
+          <h1 className="text-lg font-semibold text-[var(--color-primary)]">
+            Funnel Builder
+          </h1>
+        </div>
         <ExportImportButtons
           nodes={nodes}
           edges={edges}
@@ -115,8 +127,8 @@ function App() {
         />
       </header>
       <div className="flex-1 min-h-0 flex">
-        <Palette />
-        <main className="flex-1 min-h-0">
+        {paletteOpen && <Palette />}
+        <main className="flex-1 min-h-0" role="main" aria-label="Funnel editor">
           <FunnelCanvas
             nodes={nodes}
             edges={edges}
