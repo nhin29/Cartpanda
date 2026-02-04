@@ -26,11 +26,38 @@ function App() {
       setEdges((prev) => applyEdgeChanges(changes, prev)),
     []
   );
+  const onNodesDelete = useCallback(
+    (nodesToRemove: { id: string }[]) => {
+      const ids = new Set(nodesToRemove.map((n) => n.id));
+      setNodes((prev) => prev.filter((n) => !ids.has(n.id)));
+      setEdges((prev) =>
+        prev.filter((e) => !ids.has(e.source) && !ids.has(e.target))
+      );
+    },
+    []
+  );
+  const onEdgesDelete = useCallback(
+    (edgesToRemove: { id: string }[]) => {
+      const ids = new Set(edgesToRemove.map((e) => e.id));
+      setEdges((prev) => prev.filter((e) => !ids.has(e.id)));
+    },
+    []
+  );
   const onConnect = useCallback(
     (connection: Connection) =>
       setEdges((prev) => addEdge(connection, prev)),
     []
   );
+  const isValidConnection = useCallback(
+    (connection: Connection) => {
+      const source = connection.source ?? null;
+      if (!source) return false;
+      const sourceNode = nodes.find((n) => n.id === source);
+      return sourceNode?.type !== 'thankYou';
+    },
+    [nodes]
+  );
+
   const onAddNode = useCallback((type: NodeType, position: { x: number; y: number }) => {
     setNodes((prev) => {
       const id = `${type}-${Date.now()}`;
@@ -60,8 +87,11 @@ function App() {
             edges={edges}
             onNodesChange={onNodesChange}
             onEdgesChange={onEdgesChange}
+            onNodesDelete={onNodesDelete}
+            onEdgesDelete={onEdgesDelete}
             onConnect={onConnect}
             onAddNode={onAddNode}
+            isValidConnection={isValidConnection}
           />
         </main>
       </div>

@@ -3,9 +3,13 @@ import {
   ReactFlow,
   Background,
   Controls,
+  MarkerType,
   type OnNodesChange,
   type OnEdgesChange,
+  type OnNodesDelete,
+  type OnEdgesDelete,
   type OnConnect,
+  type Connection,
 } from 'reactflow';
 import type { FunnelNode, FunnelEdge } from '../../types';
 import type { NodeType } from '../../types';
@@ -17,8 +21,12 @@ export interface FunnelCanvasProps {
   edges: FunnelEdge[];
   onNodesChange?: OnNodesChange;
   onEdgesChange?: OnEdgesChange;
+  onNodesDelete?: OnNodesDelete;
+  onEdgesDelete?: OnEdgesDelete;
   onConnect?: OnConnect;
   onAddNode?: (type: NodeType, position: { x: number; y: number }) => void;
+  /** Return false to block a connection (e.g. Thank You has no outgoing edges). */
+  isValidConnection?: (connection: Connection) => boolean;
 }
 
 export function FunnelCanvas({
@@ -26,8 +34,11 @@ export function FunnelCanvas({
   edges,
   onNodesChange,
   onEdgesChange,
+  onNodesDelete,
+  onEdgesDelete,
   onConnect,
   onAddNode,
+  isValidConnection,
 }: FunnelCanvasProps) {
   const [isDragOver, setIsDragOver] = useState(false);
 
@@ -60,7 +71,12 @@ export function FunnelCanvas({
         nodeTypes={funnelNodeTypes}
         onNodesChange={handleNodesChange}
         onEdgesChange={handleEdgesChange}
+        onNodesDelete={onNodesDelete}
+        onEdgesDelete={onEdgesDelete}
         onConnect={handleConnect}
+        isValidConnection={isValidConnection}
+        defaultEdgeOptions={{ markerEnd: { type: MarkerType.ArrowClosed } }}
+        deleteKeyCode={['Backspace', 'Delete']}
         fitView
         minZoom={0.1}
         maxZoom={2}
