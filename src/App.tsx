@@ -1,35 +1,30 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import { FunnelCanvas } from './components/canvas';
+import type { FunnelNode, FunnelEdge } from './types';
+import { DEFAULT_FUNNEL_NODES, DEFAULT_FUNNEL_EDGES } from './constants';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [nodes] = useState<FunnelNode[]>(DEFAULT_FUNNEL_NODES);
+  const [edges] = useState<FunnelEdge[]>(DEFAULT_FUNNEL_EDGES);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="h-screen w-screen flex flex-col bg-[var(--color-canvas)]">
+      <header className="shrink-0 px-4 py-2 border-b border-[var(--color-border)] bg-[var(--color-surface)]">
+        <h1 className="text-lg font-semibold text-[var(--color-primary)]">
+          Funnel Builder
+        </h1>
+      </header>
+      <main className="flex-1 min-h-0">
+        <FunnelCanvas
+          nodes={nodes}
+          edges={edges}
+          onNodesChange={() => {}}
+          onEdgesChange={() => {}}
+          onConnect={() => {}}
+        />
+      </main>
+    </div>
+  );
 }
 
-export default App
+export default App;

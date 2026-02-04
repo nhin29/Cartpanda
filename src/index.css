@@ -25,6 +25,11 @@
   --spacing-12: 3rem;    /* 48px */
 }
 
+#root {
+  min-height: 100vh;
+  width: 100%;
+}
+
 body {
   margin: 0;
   min-width: 320px;
